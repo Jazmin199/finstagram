@@ -1,6 +1,3 @@
-# get '/' do
-#     File.read(File.join('app/views','index.html'))
-# end
 
 def humanized_time_ago(time_ago_in_minutes)
     if time_ago_in_minutes >= 60
@@ -11,7 +8,7 @@ def humanized_time_ago(time_ago_in_minutes)
 end
 
 get '/' do
-    finstagram_post_shark = {
+    @finstagram_post_shark = {
       username: "sharly_j",
       avatar_url: "http://naserca.com/images/sharky_j.jpg",
       photo_url: "http://naserca.com/images/shark.jpg",
@@ -24,7 +21,7 @@ get '/' do
       }]
     }
 
-    finstagram_post_whale = {
+    @finstagram_post_whale = {
     username: "kirk_whalum",
     avatar_url: "http://naserca.com/images/kirk_whalum.jpg",
     photo_url: "http://naserca.com/images/whale.jpg",
@@ -37,7 +34,7 @@ get '/' do
     }]
     }
 
-    finstagram_post_marlin = {
+    @finstagram_post_marlin = {
     username: "marlin_peppa",
     avatar_url: "http://naserca.com/images/marlin_peppa.jpg",
     photo_url: "http://naserca.com/images/marlin.jpg",
@@ -51,19 +48,8 @@ get '/' do
 
   }
 
-# time_ago = humanized_time_ago(finstagram_post[:time_ago_in_minutes])
+@finstagram_posts = [@finstagram_post_shark, @finstagram_post_whale, @finstagram_post_marlin]
 
-    # # if the time_ago_in_minutes is greater than 60
-    # if time_ago_in_minutes >= 60
+erb(:index)
 
-    #      # return this string
-    #     "#{time_ago_in_minutes/60} hours ago"
-
-    # # if it's less than or equal    
-    # else
-
-    #     # return this instead
-    #     "#{time_ago_in_minutes} minutes ago"
-    # end
-[finstagram_post_shark, finstagram_post_whale, finstagram_post_marlin].to_s
 end
