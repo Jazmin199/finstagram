@@ -1,3 +1,9 @@
+helpers do
+    def current_user
+        User.find_by(id: session[:user_id])
+    end
+end
+
 
 get '/' do
     @finstagram_posts = FinstagramPost.order(created_at: :desc)
@@ -24,7 +30,7 @@ post '/signup' do
 
     #if user validations pass and user is saved
     if @user.save
-        "User #{usernaname} saved!"
+        redirect to('/login')
       
     else
       erb(:signup)
@@ -32,32 +38,32 @@ post '/signup' do
 
 end
 
+
 get '/login' do        #when a GET request comes into "/login",
     erb(:login)        #render "app/views/login.erb"
 end
 
-post 'login' do     #when we submit a form with an action of /login
+post '/login' do     #when we submit a form with an action of /login
     username = params[:username]
     password = params[:password]
     
     # 1. find user by username
-    user = User.find_by(username: username)
+    @user = User.find_by(username: username)
 
-    # 2. If that user exists
+    # 2. If that user exists and password matches the password input
     
-    if user
-
-        # check if that user's password matches the password input
-        # 3. if the passwords match
-        if user.password == password
-
-            #login (more to come here)
-            "Success!"
-        else
-            "Password doen't match"
-        end
-
+    if @user && @user.password == password
+        
+        session[:user_id] = @user.id
+        redirect to('/')
     else
-        "No user"
+        @error_message = "Login failed."
+        erb(:login)
     end
+
+end
+
+get '/logout' do
+    session[:user_id] = nil
+    redirect to('/')
 end
