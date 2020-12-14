@@ -38,6 +38,20 @@ post '/signup' do
 
 end
 
+post '/likes' do
+    finstagram_post_id = params[:finstagram_post_id]
+
+    like = Like.new({ finstagram_post_id: finstagram_post_id, user_id: current_user.id })
+    like.save
+
+    redirect(back)
+end
+
+delete '/likes/:id' do
+    like = Like.find(params[:id])
+    like.destroy
+    redirect(back)
+end
 
 get '/login' do        #when a GET request comes into "/login",
     erb(:login)        #render "app/views/login.erb"
